@@ -1,16 +1,60 @@
-Console.WriteLine("Enter a three-digit number:");
+using System;
+using System.Text.RegularExpressions;
 
-int num = int.Parse(Console.ReadLine());
-
-int yuzluk = (num % 1000) / 100;
-int onluq = (num % 100) / 10;
-int teklik = (num % 10);
-
-if (yuzluk == onluq && onluq == teklik)
+public static class Helper
 {
-    Console.WriteLine("Butun ededler eynidir.");
+    public static bool IsOdd(this int number)
+    {
+        return number % 2 != 0;
+    }
+
+    public static bool IsEven(this int number)
+    {
+        return number % 2 == 0;
+    }
+
+    public static bool HasDigit(this string word)
+    {
+        return Regex.IsMatch(word, @"\d");
+    }
+
+    public static bool CheckPassword(this string password)
+    {
+        return Regex.IsMatch(password, @"^(?=.*[A-Z])(?=.*\d).{8,}$");
+    }
+
+    public static string Capitalize(this string input)
+    {
+        if (string.IsNullOrEmpty(input))
+        {
+            return input;
+        }
+
+        string[] words = input.Split(' ');
+        for (int i = 0; i < words.Length; i++)
+        {
+            words[i] = words[i].ToUpper();
+        }
+
+        return string.Join(" ", words);
+    }
 }
-else
+
+class Program
 {
-    Console.WriteLine("Eyni olmayan ededler var!");
+    static void Main(string[] args)
+    {
+        int number = 5;
+        Console.WriteLine($"{number} is odd. {number.IsOdd()}");
+        Console.WriteLine($"{number} is even {number.IsEven()}");
+
+        string word = "0sman";
+        Console.WriteLine($"'{word}' contain digits. {word.HasDigit()}");
+
+        string password = "Password";
+        Console.WriteLine($"'{password}' is valid. {password.CheckPassword()}");
+
+        string input = "we are all uppercase!";
+        Console.WriteLine($"Capitalized: {input.Capitalize()}");
+    }
 }
